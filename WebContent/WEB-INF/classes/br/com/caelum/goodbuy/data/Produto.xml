@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="Produto">
+ 
+    <resultMap id="result" type="Produto">
+        <result property="id" column="id"/>
+        <result property="nome" column="nome"/>
+        <result property="descricao" column="descricao"/>
+        <result property="preco" column="preco"/>
+        <result property="lote.numero" column="nun_lote"/>
+        <result property="lote.data" column="data_lote"/>
+    </resultMap>
+ 
+    <select id="getAll" resultMap="result">
+        SELECT * FROM Produto
+    </select>
+ 	
+ 	<select id="buscaNome" parameterType="String" resultMap="result">
+        SELECT * FROM Produto WHERE nome like CONCAT('%', #{nome}, '%')
+    </select>
+ 	
+    <select id="getById" parameterType="int" resultMap="result">
+        SELECT * FROM Produto WHERE id = #{id}
+    </select>
+ 
+    <delete id="deleteById" parameterType="int">
+        DELETE from Produto WHERE id = #{id};
+    </delete>
+ 
+    <insert id="insert" parameterType="Produto">
+    INSERT INTO Produto (nome, descricao, preco, nun_lote, data_lote)
+        VALUES (#{nome}, #{descricao}, #{preco}, #{lote.numero}, #{lote.data, jdbcType=DATE});
+    </insert>
+ 
+    <update id="update" parameterType="Produto">
+        UPDATE Produto
+        SET
+            nome = #{nome},
+            descricao = #{descricao},
+            preco = #{preco},
+            nun_lote = #{lote.numero},
+            data_lote = #{lote.data, jdbcType=DATE}
+        WHERE id = #{id};
+  </update>
+ 
+</mapper>
